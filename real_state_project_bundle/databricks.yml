@@ -1,0 +1,35 @@
+# This is a Databricks asset bundle definition for real_state_project_bundle.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: real_state_project_bundle
+  uuid: 6b141df3-2f0d-484d-8955-8fbe1da69f67
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    presets:
+      name_prefix: dev_${workspace.current_user.short_name}
+      source_linked_deployment: false
+    workspace:
+      host: https://dbc-88d65fb3-00e0.cloud.databricks.com/
+    
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-88d65fb3-00e0.cloud.databricks.com/
+      # We explicitly deploy to /Workspace/Users/mon_tez_01@hotmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/mon_tez_01@hotmail.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: admins
+        level: CAN_MANAGE

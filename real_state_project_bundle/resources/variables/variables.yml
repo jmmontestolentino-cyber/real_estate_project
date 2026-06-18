@@ -1,0 +1,11 @@
+variables:
+  catalog_name:
+    default: real_state_project_bundle
+  schema_name_raw:
+    default: raw_data
+  schema_name_bronze:
+    default: bronze
+  schema_name_silver:
+    default: silver
+  schema_name_gold:
+    default: gold

@@ -1,0 +1,47 @@
+resources:
+  jobs:
+    real_state_proyect_job1:
+      name: real_state_proyect_job1
+      tasks:
+        - task_key: ingestion_real_state
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion_s3_v3.ipynb
+            base_parameters:
+              catalog_param: ${var.catalog_name}
+              source_schema_param: ${var.schema_name_raw}
+              target_schema_param: ${var.schema_name_bronze}
+            source: WORKSPACE
+        - task_key: silver_clean
+          depends_on:
+            - task_key: ingestion_real_state
+          notebook_task:
+            notebook_path: ../../src/notebooks/capa_silver1.ipynb
+            base_parameters:
+              catalog_param: ${var.catalog_name}
+              target_schema_param: ${var.schema_name_silver}
+              source_schema_param: ${var.schema_name_bronze}
+              raw_schema_param: ${var.schema_name_raw}
+            source: WORKSPACE
+        - task_key: dim_tables
+          depends_on:
+            - task_key: silver_clean
+          notebook_task:
+            notebook_path: ../../src/notebooks/capa_gold_dim.ipynb
+            base_parameters:
+              catalog_param: ${var.catalog_name}
+              target_schema_param: ${var.schema_name_gold}
+              source_schema_param: ${var.schema_name_silver}
+            source: WORKSPACE
+        - task_key: fact_table
+          depends_on:
+            - task_key: dim_tables
+          notebook_task:
+            notebook_path: ../../src/notebooks/capa_gold_fact.ipynb
+            base_parameters:
+              catalog_param: ${var.catalog_name}
+              target_schema_param: ${var.schema_name_gold}
+              source_schema_param: ${var.schema_name_silver}
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
