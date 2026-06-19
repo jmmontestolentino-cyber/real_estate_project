@@ -1,9 +1,9 @@
 resources:
   jobs:
-    real_state_proyect_job1:
-      name: real_state_proyect_job1
+    real_estate_proyect_job1:
+      name: real_estate_proyect_job1
       tasks:
-        - task_key: ingestion_real_state
+        - task_key: ingestion_real_estate
           notebook_task:
             notebook_path: ../../src/notebooks/ingestion_s3_v3.ipynb
             base_parameters:
@@ -13,7 +13,7 @@ resources:
             source: WORKSPACE
         - task_key: silver_clean
           depends_on:
-            - task_key: ingestion_real_state
+            - task_key: ingestion_real_estate
           notebook_task:
             notebook_path: ../../src/notebooks/capa_silver1.ipynb
             base_parameters:
