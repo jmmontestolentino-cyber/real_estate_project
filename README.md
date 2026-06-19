@@ -1,8 +1,8 @@
-# 🏙️ Real Estate Data Pipeline
+# 🏗️ Real Estate Data Pipeline
 
-El siguiente proyecto abarca desde la extraccion de datos con tecnicas de web escraping usando drission y selenium hasta la creacion de Dim_tables y Fact_tables para consultas por parte del equipo de analisis.
+Este proyecto documenta desde la extraccion de datos con tecnicas de web escraping usando drission y selenium hasta modelo dimensional Dim_tables y Fact_tables para su explotacion analitica.
 ![DAG de ejecución en Databricks](assets/pipeline_real_estate.png)
-(Añadi el bundle, dos archivos csv, y el archivo con los codigos postales para hacer el cruce, para que puedas probar el pipeline en databricks, en resources esta el el archivo variables.yml donde puedes colocar el nombre del catalog y los schema que deseas utilizar.)
+Inclui en este repositorio el  bundle, dos archivos csv, y el archivo con los codigos postales para hacer el cruce de datos. En resorces encotraras el archivo variables.yml donde se configura nombres de schema y catalog.
 
 ruta de el archivo con los codigos postales:
 /Volumes/real_state_project_bundle/raw_data/catalogo_maestro/CPdescarga.txt
@@ -12,7 +12,7 @@ ruta de los archivos csv:
 
 En este caso se describe el proceso de etl que se llevo acabo en la plataforma Databricks.
 
-La plataforma que se utilizo para guardar la informacion fue **aws**, el servicio **s3**.Aqui es donde se guardo el Catalog
+La plataforma de almacenamiento  **aws**, el servicio **s3**.
 Se creo una cuenta de administrador que se agrego a un grupo administradores ya que no es recomendable usar la cuenta root.
 
 El catálogo principal (`real_estate_project`) fue configurado en **Unity Catalog** utilizando un bucket de **AWS S3** como *Storage Location*. Esto garantiza que los archivos físicos residan de forma segura en la nube de AWS, evitando el *vendor lock-in*, mientras Databricks gestiona la gobernanza, los permisos y el procesamiento.
@@ -29,7 +29,7 @@ Para la capa gold se crearon DimTable y FactTable. Para las DimTable se implemen
 
 En FactTable las métricas de negocio sons: Precio, Area_m2, Recamaras, Estacionamientos, y Banos. Si en algún momento en el futuro agregas la automatización del esquema (como optimizar los archivos de la tabla de hechos con **OPTIMIZE** o **ZORDER** por fecha y ubicación en Databricks).
 
-Ademas agrego una imagen del proceso cuando cargue el bundle, como se ve cuando se van haciendo las correcciones hasta que funciona.
+El pipeline se automatizo y orquesto atraves de **Databricks Workflows (Jobs & Pipelines)**, en la imagen se nota el proceso de fallas y correciones. Si estas practicando databricks siéntete completamente libre de hacer fork de este repositorio, explorar el código, replicar la Arquitectura Medallón o utilizar este pipeline como referencia.
 ![Historial ejecuciones,correciones en el job](assets/job_real_estate.png)
 
 
